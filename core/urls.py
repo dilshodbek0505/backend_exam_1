@@ -8,6 +8,8 @@ from .schema import swagger_urlpatterns
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/common/", include("apps.common.urls", namespace="common")),
+    path("api/v1/user/", include("apps.users.urls")),
+    path("api/v1/course/", include("apps.course.urls"))
 ]
 
 urlpatterns += swagger_urlpatterns
