@@ -2,6 +2,8 @@ import re
 
 from rest_framework import serializers
 
+from django.core.validators import RegexValidator, MinLengthValidator, MaxLengthValidator
+
 from apps.users.models import User
 
 
@@ -14,25 +16,12 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class OtpSerializer(serializers.Serializer):
-    phone_number = serializers.CharField(max_length=13)
-
-    def validate_phone_number(self,value):
-        pattern = r'^[0-9]{9}$'
-
-        if not re.match(pattern, value):
-            raise serializers.ValidationError('Invalid phone number')
-
-        return value
+    phone_validator = RegexValidator("^[0-9]{9}$", "Invalid phone number", 400)
+    phone_number = serializers.CharField(max_length=13, validators=[phone_validator])
 
 
 class ConfirmOtpSerializer(serializers.Serializer):
-    phone_number = serializers.CharField(max_length=13)
-    code = serializers.CharField(max_length=6)
+    phone_validator = RegexValidator("^[0-9]{9}$", "Invalid phone number", 400)
+    phone_number = serializers.CharField(max_length=13, validators=[phone_validator])
+    code = serializers.CharField(max_length=6, validators=[MinLengthValidator(6), MaxLengthValidator(6)])
 
-    def validate_phone_number(self,value):
-        pattern = r'^[0-9]{9}$'
-
-        if not re.match(pattern, value):
-            raise serializers.ValidationError('Invalid phone number')
-
-        return value

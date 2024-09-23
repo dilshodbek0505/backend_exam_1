@@ -1,30 +1,32 @@
-from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, RetrieveAPIView
-from rest_framework.permissions import IsAuthenticated
-
-from apps.course.api_endpoints.Video.serializers import VideoSerializer
 from apps.course.models import Video
+from apps.course.api_endpoints.Video.serializers import VideoSerializer
 from apps.course.permissions import IsAdmin
 
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView, ListAPIView,  RetrieveAPIView
+from rest_framework.permissions import IsAuthenticated
 
-class VideoCreateAPIView(CreateAPIView):
-    queryset = Video.objects.all()
+
+class VideoAPIView(CreateAPIView):
     serializer_class = VideoSerializer
+    queryset = Video.objects.all()
     permission_classes = (IsAuthenticated, IsAdmin)
 
 
-class VideoRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = Video.objects.all()
+class VideoRUDAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = VideoSerializer
+    queryset = Video.objects.all()
     permission_classes = (IsAuthenticated, IsAdmin)
 
 
 class VideoListAPIView(ListAPIView):
-    queryset = Video.objects.all()
     serializer_class = VideoSerializer
+    queryset = Video.objects.all()
+    permission_classes = (IsAuthenticated,)
 
 
 class VideoRetrieveAPIView(RetrieveAPIView):
-    queryset = Video.objects.all()
     serializer_class = VideoSerializer
+    queryset = Video.objects.all()
+    permission_classes = (IsAuthenticated, )
 
 

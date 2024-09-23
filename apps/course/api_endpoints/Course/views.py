@@ -1,32 +1,30 @@
+from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, RetrieveAPIView
 
 from apps.course.models import Course
-from apps.course.api_endpoints.Course.serializers import CourseSerializer
 from apps.course.permissions import IsAdmin
+from apps.course.api_endpoints.Course.serializers import CourseSerializer
 
 
 class CourseCreateAPIView(CreateAPIView):
-    serializer_class = CourseSerializer
     queryset = Course.objects.all()
-    permission_classes = (IsAuthenticated, IsAdmin)
-
-
-class CourseRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = CourseSerializer
+    permission_classes = [IsAuthenticated, IsAdmin]
+
+
+class CourseRUDAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Course.objects.all()
-    permission_classes = (IsAuthenticated, IsAdmin)
-
-
-class CourseListAPIView(ListAPIView):
     serializer_class = CourseSerializer
-    queryset = Course.objects.all()
-    permission_classes = (IsAuthenticated, )
+    permission_classes = [IsAuthenticated, IsAdmin]
 
 
 class CourseRetrieveAPIView(RetrieveAPIView):
-    serializer_class = CourseSerializer
     queryset = Course.objects.all()
-    permission_classes = (IsAuthenticated, )
+    serializer_class = CourseSerializer
+    permission_classes = [IsAuthenticated]
 
+
+class CourseListAPIView(ListAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+    permission_classes = [IsAuthenticated]

@@ -6,6 +6,7 @@ from apps.users.api_endpoints.Auth.views import (
     ConfirmOtpApi,
     UserDetailApi
 )
+from apps.users.api_endpoints.Admin.views import AdminAPIView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -22,5 +23,6 @@ urlpatterns = [
     path('user-detail/<int:pk>/', UserDetailApi.as_view(), name='user-detail'),
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('admin', AdminAPIView.as_view())
 
 ]

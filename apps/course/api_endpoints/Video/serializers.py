@@ -6,5 +6,6 @@ from apps.course.models import Video
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
-        fields = '__all__'
-        write_only_fields = ("file",)
+        fields = ("id", "name", "file", "course", "duration")
+        read_only_fields = ("file", "duration")
+

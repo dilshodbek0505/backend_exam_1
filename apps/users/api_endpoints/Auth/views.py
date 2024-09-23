@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from apps.users.models import User
 from apps.users.api_endpoints.Auth.serializers import UserSerializer, OtpSerializer, ConfirmOtpSerializer
-from apps.users.api_endpoints.Auth.permissions import IsAdmin
+from apps.users.permissions import IsAdmin
 from apps.users.api_endpoints.Auth.utile import generate_code
 
 from django.utils.cache import caches
@@ -24,6 +24,7 @@ class UserListApi(ListAPIView):
 class UserDetailApi(RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()
 
     def get_object(self):
         return self.request.user

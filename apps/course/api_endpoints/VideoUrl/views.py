@@ -9,16 +9,16 @@ from django.conf import settings
 from django.http import StreamingHttpResponse
 
 from apps.course.models import Video, UserCourse
+from apps.course.api_endpoints.VideoUrl.serializers import EmptySerializer
 
 
 class GenerateVideoUrl(GenericAPIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = EmptySerializer
 
     def get(self, request, *args, **kwargs):
         user = self.request.user
         video_id = self.kwargs['video_id']
-
-        video = None
 
         try:
             video = Video.objects.get(pk=video_id)
@@ -28,11 +28,10 @@ class GenerateVideoUrl(GenericAPIView):
         try:
             UserCourse.objects.get(user=user, course=video.course)
         except UserCourse.DoesNotExist:
-            return Response({"data": "User course not found"}, status=404)
+            return Response({"data": "Course not found"}, status=404)
 
         data = f"{user.id}:{video_id}"
         secret_key = settings.SECRET_KEY
-
         url = hmac.new(secret_key.encode(), data.encode(), hashlib.sha256).hexdigest()
 
         return Response({"video_url": url}, status=200)
@@ -40,6 +39,7 @@ class GenerateVideoUrl(GenericAPIView):
 
 class VideoStream(GenericAPIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = EmptySerializer
 
     def get(self, request, *args, **kwargs):
         user = self.request.user
